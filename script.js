@@ -29,7 +29,24 @@ let state = {
     sortBy:"price"
 }
 
-console.log(state.artPiecies)
+const addArt = () => {
+    console.log("add an art peice")
+
+let name = document.getElementById("newArtForm").elements.item(0).value;
+let artist = document.getElementById("newArtForm").elements.item(1).value;
+let price = document.getElementById("newArtForm").elements.item(2).value;
+console.log(name + artist + price) 
+
+state.artPiecies.push({
+    name: name, 
+    artist: artist,
+    price: price
+})
+
+document.getElementById("newArtForm").reset()
+
+render();
+}
 
 
 const showArt = () => {

@@ -6,6 +6,25 @@
     <body>
         <div class = 'container'>
             <div id="root"></div>
+
+            <div class="row">
+                <form id = "newArtForm" class="col s12">
+                    <div class="input-field col s12">
+                        <input placeholder="Name" name="artName" type="text" class="validate">
+                        <label for="first_name"></label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input placeholder="Artist" name="artArtist" type="text" class="validate">
+                        <label for="first_name"></label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input placeholder="Price" name="artPrice" type="text" class="validate">
+                        <label for="first_name"></label>
+                    </div>
+                    <a class="waves-effect waves-light btn-small" onclick="addArt()">Submit</a>
+                </form>
+            </div>
+
             <script src='script.js'></script>
         </div>
     </body>
