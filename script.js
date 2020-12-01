@@ -26,11 +26,73 @@ let art3 = {
 let state = {
     headerTitle:"Whitesides Art Gallery",
     artPiecies:[art1,art2,art3],
-    sortBy:"price"
+    sortBy:"price",
+    showEditForm:false,
+    showNewForm:false,
+    editIndex:0,
+    deleteIndex:0
+}
+const deleteArt = (index) => {
+    console.log(index);
+    state.deleteIndex = index
+    console.log("delete called");
+
+    const filteredGroup = state.artPiecies.filter((art,filteredIndex) => {
+        return filteredIndex !== state.deleteIndex
+        })
+
+    state.artPiecies = filteredGroup
+  
+  render();
+}
+
+const showEditForm = () => {
+    
+    let htmlString = ` <div class="row" id="editForm">
+    <form id = "editArtForm" class="col s12" >
+        <div class="input-field col s12">
+            <input placeholder="Name" name="artName" type="text" class="validate" value = "${state.artPiecies[state.editIndex].name}">
+            <label for="first_name"></label>
+        </div>
+        <div class="input-field col s12">
+            <input placeholder="Artist" name="artArtist" type="text" class="validate" value = "${state.artPiecies[state.editIndex].artist}">
+            <label for="first_name"></label>
+        </div>
+        <div class="input-field col s12">
+            <input placeholder="Price" name="artPrice" type="text" class="validate" value = "${state.artPiecies[state.editIndex].price}">
+            <label for="first_name"></label>
+        </div>
+        <a class="waves-effect waves-light btn-small" onclick="updateArt()">Update</a>
+        
+    </form>
+    </div>`
+
+    console.log("unHideEditForm")
+    return htmlString
+
+}
+
+const updateArt = () => {
+    let name = document.getElementById("editArtForm").elements.item(0).value;
+    let artist = document.getElementById("editArtForm").elements.item(1).value;
+    let price = document.getElementById("editArtForm").elements.item(2).value;
+
+    state.artPiecies[state.editIndex]={
+        name: name, 
+        artist: artist,
+        price: price
+    }
+    
+    document.getElementById("editArtForm").reset()
+    state.showEditForm = false
+    render();
+
+
 }
 
 const addArt = () => {
     console.log("add an art peice")
+
 
 let name = document.getElementById("newArtForm").elements.item(0).value;
 let artist = document.getElementById("newArtForm").elements.item(1).value;
@@ -45,6 +107,7 @@ state.artPiecies.push({
 
 document.getElementById("newArtForm").reset()
 
+state.showNewForm = false
 render();
 }
 
@@ -65,8 +128,8 @@ const showArt = () => {
                     <p>price: $${artPeice.price}.00</p>
                     </div>
                     <div class="card-action">
-                      <a href="#">Edit</a>
-                      <a href="#">Delete</a>
+                      <a onclick="unHideEditForm(${index})">Edit</a>
+                      <a onclick="deleteArt(${index})">Delete</a>
                     </div>
                   </div>
                 </div>
@@ -76,13 +139,68 @@ const showArt = () => {
     return htmlString
 }
 
+const showNewForm = () => {
+   console.log("show form") 
+   let htmlString = `
+    <div class="row" id="newForm">
+                <form id = "newArtForm" class="col s12" >
+                    <div class="input-field col s12">
+                        <input placeholder="Name" name="artName" type="text" class="validate">
+                        <label for="first_name"></label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input placeholder="Artist" name="artArtist" type="text" class="validate">
+                        <label for="first_name"></label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input placeholder="Price" name="artPrice" type="text" class="validate">
+                        <label for="first_name"></label>
+                    </div>
+                    <a class="waves-effect waves-light btn-small" onclick="addArt()">Submit</a>
+                    <a class="waves-effect waves-light btn-small" onclick="hideForm()">Hide Form</a>
+                    
+                </form>
+            </div>
+    `
+    return htmlString
+    
+}
+const unHideEditForm = (index) => {
+    console.log("unHideEditForm")
+    state.editIndex = index
+    state.showEditForm = true
+    render();
+}
+
+const unHideNewForm = () => {
+    console.log("unHideNewForm")
+    state.showNewForm = true
+    render();
+}
+
+const hideForm = () => {
+    console.log("Hide New Form")
+    state.showNewForm = false
+    render();
+}
 
 const render = () =>{
-   let root = document.getElementById("root")
-   let htmlString = `<h1>${state.headerTitle}</h1>`
-   htmlString += showArt()
-   root.innerHTML = htmlString
-}
+    let root = document.getElementById("root")
+    let htmlString = `<h1>${state.headerTitle}</h1>`
+    htmlString += `<a onclick= "unHideNewForm()" class="waves-effect waves-light btn">New Art Peice</a>`
+    htmlString += showArt()
+    // htmlString += showForm()
+    if (state.showNewForm == true) {
+        htmlString += showNewForm()
+        state.showEditForm == false
+    } else console.log("new form is false")
+    if (state.showEditForm == true){
+        htmlString += showEditForm();
+        state.showNewForm == false
+    } else console.log ("edit form is false")
+
+    root.innerHTML = htmlString
+ }
 
 render()
 console.log("its working")
