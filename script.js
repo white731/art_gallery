@@ -187,9 +187,8 @@ const hideForm = () => {
 const render = () =>{
     let root = document.getElementById("root")
     let htmlString = `<h1>${state.headerTitle}</h1>`
-    htmlString += `<a onclick= "unHideNewForm()" class="waves-effect waves-light btn">New Art Peice</a>`
     htmlString += showArt()
-    // htmlString += showForm()
+    htmlString += `<a onclick= "unHideNewForm()" class="waves-effect waves-light btn">New Art Peice</a>`
     if (state.showNewForm == true) {
         htmlString += showNewForm()
         state.showEditForm == false
